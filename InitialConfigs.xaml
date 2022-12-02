@@ -1,18 +1,19 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Main" this:Main.in_CONFIG_FILE_PATH="C:\Users\BARA\Documents\UiPath\Email_Dispatcher\FileMaster\configulation.xlsx" this:Main.in_CONSTANTS_SHEETS="[{&quot;Constants&quot;}]" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:c="clr-namespace:ClassLibrary;assembly=config_structure" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ss="clr-namespace:System.Security;assembly=mscorlib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Main" this:Main.in_CONFIG_FILE_PATH="C:\Users\BARA\Documents\UiPath\Email_Dispatcher\FileMaster\configulation.xlsx" this:Main.in_CONSTANTS_SHEETS="[{&quot;Constants&quot;}]" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:c="clr-namespace:ConfigClass;assembly=ConfigClass" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ss="clr-namespace:System.Security;assembly=mscorlib" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_CONFIG_FILE_PATH" Type="InArgument(x:String)" />
     <x:Property Name="in_CONSTANTS_SHEETS" Type="InArgument(s:String[])" />
     <x:Property Name="in_ORCHESTRATOR_SHEETS" Type="InArgument(s:String[])" />
-    <x:Property Name="out_CONFIGS" Type="OutArgument(scg:Dictionary(x:String, c:Configs))" />
+    <x:Property sap2010:Annotation.AnnotationText="Type 'c:Configs' ('clr-namespace:ClassLibrary;assembly=config_structure') could not be resolved and was automatically replaced with 'UnknownType'" Name="out_CONFIGS" Type="OutArgument(scg:Dictionary(x:String, c:Config))" />
     <x:Property Name="in_CREDENTIAL_SHEETS" Type="InArgument(s:String[])" />
+    <x:Property Name="in_MAINTAIN_SHEET" Type="InArgument(x:String)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>837.6,701.6</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>848.8,701.6</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="64">
+    <scg:List x:TypeArguments="x:String" Capacity="33">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -45,11 +46,11 @@
       <x:String>UiPath.DataTableUtilities</x:String>
       <x:String>UiPath.Excel.Activities</x:String>
       <x:String>System.Security</x:String>
-      <x:String>ClassLibrary</x:String>
+      <x:String>ConfigClass</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="54">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="30">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -77,6 +78,8 @@
       <AssemblyReference>UiPath.System.Activities.Design</AssemblyReference>
       <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
       <AssemblyReference>config_structure</AssemblyReference>
+      <AssemblyReference>ConfigClass</AssemblyReference>
+      <AssemblyReference>System.Collections.Immutable</AssemblyReference>
       <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
@@ -104,12 +107,21 @@
       <Sequence DisplayName="Pre-Condition" sap:VirtualizedContainerService.HintSize="200,68.8" sap2010:WorkflowViewState.IdRef="Sequence_1">
         <Sequence.Variables>
           <Variable x:TypeArguments="x:Boolean" Name="blFileExist" />
+          <Variable x:TypeArguments="x:String" Name="strNewCopy" />
         </Sequence.Variables>
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
+        <Assign sap:VirtualizedContainerService.HintSize="483.2,60" sap2010:WorkflowViewState.IdRef="Assign_17">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:String">[strNewCopy]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:String">[in_CONFIG_FILE_PATH+"Del."+in_CONFIG_FILE_PATH.Split("\"c).Last.ToString.Split("."c).Last]</InArgument>
+          </Assign.Value>
+        </Assign>
         <ui:FileExistsX DisplayName="File Exists" Exists="[blFileExist]" sap:VirtualizedContainerService.HintSize="483.2,134.4" sap2010:WorkflowViewState.IdRef="FileExistsX_1" Path="[in_CONFIG_FILE_PATH]" />
         <If Condition="[not blFileExist]" sap:VirtualizedContainerService.HintSize="483.2,248.8" sap2010:WorkflowViewState.IdRef="If_1">
           <If.Then>
@@ -125,15 +137,16 @@
             </Sequence>
           </If.Else>
         </If>
-        <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_CONFIG_FILE_PATH+&quot;Del.xlsx&quot;]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="483.2,160" sap2010:WorkflowViewState.IdRef="CopyFile_1" Overwrite="True" Path="[in_CONFIG_FILE_PATH]" />
+        <ui:CopyFile ContinueOnError="{x:Null}" Destination="[strNewCopy]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="483.2,160" sap2010:WorkflowViewState.IdRef="CopyFile_1" Overwrite="True" Path="[in_CONFIG_FILE_PATH]" />
         <Assign sap:VirtualizedContainerService.HintSize="483.2,60" sap2010:WorkflowViewState.IdRef="Assign_1">
           <Assign.To>
             <OutArgument x:TypeArguments="x:String">[in_CONFIG_FILE_PATH]</OutArgument>
           </Assign.To>
           <Assign.Value>
-            <InArgument x:TypeArguments="x:String">[in_CONFIG_FILE_PATH+"Del.xlsx"]</InArgument>
+            <InArgument x:TypeArguments="x:String">[strNewCopy]</InArgument>
           </Assign.Value>
         </Assign>
+        <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="483.2,92.8" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Info" Message="[&quot;New Configs File copy to : &quot;+strNewCopy]" />
       </Sequence>
       <FlowStep.Next>
         <FlowStep x:Name="__ReferenceID0">
@@ -144,27 +157,91 @@
               <av:PointCollection x:Key="ConnectorLocation">300,315.3 300,365.3</av:PointCollection>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <Sequence DisplayName="Statement" sap:VirtualizedContainerService.HintSize="667.2,6122.4" sap2010:WorkflowViewState.IdRef="Sequence_2">
+          <Sequence DisplayName="Statement" sap:VirtualizedContainerService.HintSize="665.6,6713.6" sap2010:WorkflowViewState.IdRef="Sequence_2">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="sd:DataTable" Name="dtMaintainValue" />
+              <Variable x:TypeArguments="s:String[]" Name="arrstrValidateMaintainColumns" />
+            </Sequence.Variables>
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <Assign sap:VirtualizedContainerService.HintSize="625.6,60" sap2010:WorkflowViewState.IdRef="Assign_8">
+            <Assign sap:VirtualizedContainerService.HintSize="624,60" sap2010:WorkflowViewState.IdRef="Assign_8">
               <Assign.To>
-                <OutArgument x:TypeArguments="scg:Dictionary(x:String, c:Configs)">[out_CONFIGS]</OutArgument>
+                <OutArgument x:TypeArguments="scg:Dictionary(x:String, c:Config)">[out_CONFIGS]</OutArgument>
               </Assign.To>
               <Assign.Value>
-                <InArgument x:TypeArguments="scg:Dictionary(x:String, c:Configs)">[New Dictionary(Of String,ClassLibrary.Configs)]</InArgument>
+                <InArgument x:TypeArguments="scg:Dictionary(x:String, c:Config)">[New Dictionary(Of String,Config)]</InArgument>
               </Assign.Value>
             </Assign>
-            <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For each configuration sheet" sap:VirtualizedContainerService.HintSize="625.6,2098.4" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[in_CONSTANTS_SHEETS]">
+            <Sequence DisplayName="Read maintain sheet" sap:VirtualizedContainerService.HintSize="624,473.6" sap2010:WorkflowViewState.IdRef="Sequence_19">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <ui:ReadRange AddHeaders="True" DataTable="[dtMaintainValue]" DisplayName="Read range (Settings and Constants sheets)" sap:VirtualizedContainerService.HintSize="333.6,88" sap2010:WorkflowViewState.IdRef="ReadRange_4" SheetName="[in_MAINTAIN_SHEET]" WorkbookPath="[in_CONFIG_FILE_PATH]">
+                <ui:ReadRange.Range>
+                  <InArgument x:TypeArguments="x:String">
+                    <Literal x:TypeArguments="x:String" Value="" />
+                  </InArgument>
+                </ui:ReadRange.Range>
+              </ui:ReadRange>
+              <Assign sap:VirtualizedContainerService.HintSize="333.6,60" sap2010:WorkflowViewState.IdRef="Assign_12">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="s:String[]">[arrstrValidateMaintainColumns]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="s:String[]">[{"Name","Value","Type"}]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="333.6,52.8" sap2010:WorkflowViewState.IdRef="ForEach`1_8" Values="[arrstrValidateMaintainColumns]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:String">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:String" Name="validateColumn" />
+                    </ActivityAction.Argument>
+                    <If Condition="[not dtMaintainValue.Columns.Contains(validateColumn)]" sap:VirtualizedContainerService.HintSize="483.2,248.8" sap2010:WorkflowViewState.IdRef="If_9">
+                      <If.Then>
+                        <Throw DisplayName="init Constant Error" Exception="[New Exception(&quot;Missing Maintain Sheet Header &quot;&quot;&quot;+validateColumn+&quot;&quot;&quot;. (&quot;+String.Join(&quot;,&quot;,arrstrValidateMaintainColumns.ToArray)+&quot;)&quot;)]" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="Throw_11" />
+                      </If.Then>
+                      <If.Else>
+                        <Sequence sap:VirtualizedContainerService.HintSize="200,84.8" sap2010:WorkflowViewState.IdRef="Sequence_18">
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                        </Sequence>
+                      </If.Else>
+                    </If>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+              </ui:ForEach>
+              <Assign sap:VirtualizedContainerService.HintSize="333.6,60" sap2010:WorkflowViewState.IdRef="Assign_14">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="sd:DataColumn[]">[dtMaintainValue.PrimaryKey]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="sd:DataColumn[]">[New DataColumn() { dtMaintainValue.Columns(0)}]</InArgument>
+                </Assign.Value>
+              </Assign>
+            </Sequence>
+            <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For each configuration sheet" sap:VirtualizedContainerService.HintSize="624,2172.8" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[in_CONSTANTS_SHEETS]">
               <ui:ForEach.Body>
                 <ActivityAction x:TypeArguments="x:String">
                   <ActivityAction.Argument>
                     <DelegateInArgument x:TypeArguments="x:String" Name="Sheet" />
                   </ActivityAction.Argument>
-                  <Sequence sap2010:Annotation.AnnotationText="Read settings and constants from the configuration file and add them to the Config dictionary." DisplayName="Get local settings and constants" sap:VirtualizedContainerService.HintSize="587.2,1973.6" sap2010:WorkflowViewState.IdRef="Sequence_6">
+                  <Sequence sap2010:Annotation.AnnotationText="Read settings and constants from the configuration file and add them to the Config dictionary." DisplayName="Get local settings and constants" sap:VirtualizedContainerService.HintSize="588.8,2048" sap2010:WorkflowViewState.IdRef="Sequence_6">
                     <Sequence.Variables>
                       <Variable x:TypeArguments="sd:DataTable" Name="dt_SettingsAndConstants" />
                       <Variable x:TypeArguments="s:String[]" Name="arrstrValidateColumns" />
@@ -177,7 +254,7 @@
                         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                       </scg:Dictionary>
                     </sap:WorkflowViewStateService.ViewState>
-                    <Assign sap:VirtualizedContainerService.HintSize="545.6,60" sap2010:WorkflowViewState.IdRef="Assign_9">
+                    <Assign sap:VirtualizedContainerService.HintSize="547.2,60" sap2010:WorkflowViewState.IdRef="Assign_9">
                       <Assign.To>
                         <OutArgument x:TypeArguments="sd:DataTable">[dt_SettingsAndConstants]</OutArgument>
                       </Assign.To>
@@ -185,14 +262,14 @@
                         <InArgument x:TypeArguments="sd:DataTable">[Nothing]</InArgument>
                       </Assign.Value>
                     </Assign>
-                    <ui:ReadRange AddHeaders="True" DataTable="[dt_SettingsAndConstants]" DisplayName="Read range (Settings and Constants sheets)" sap:VirtualizedContainerService.HintSize="545.6,88" sap2010:WorkflowViewState.IdRef="ReadRange_1" PreserveFormat="True" SheetName="[Sheet]" WorkbookPath="[in_CONFIG_FILE_PATH]">
+                    <ui:ReadRange AddHeaders="True" DataTable="[dt_SettingsAndConstants]" DisplayName="Read range (Settings and Constants sheets)" sap:VirtualizedContainerService.HintSize="547.2,88" sap2010:WorkflowViewState.IdRef="ReadRange_1" PreserveFormat="True" SheetName="[Sheet]" WorkbookPath="[in_CONFIG_FILE_PATH]">
                       <ui:ReadRange.Range>
                         <InArgument x:TypeArguments="x:String">
                           <Literal x:TypeArguments="x:String" Value="" />
                         </InArgument>
                       </ui:ReadRange.Range>
                     </ui:ReadRange>
-                    <Assign sap:VirtualizedContainerService.HintSize="545.6,60" sap2010:WorkflowViewState.IdRef="Assign_5">
+                    <Assign sap:VirtualizedContainerService.HintSize="547.2,60" sap2010:WorkflowViewState.IdRef="Assign_5">
                       <Assign.To>
                         <OutArgument x:TypeArguments="s:String[]">[arrstrValidateColumns]</OutArgument>
                       </Assign.To>
@@ -200,7 +277,7 @@
                         <InArgument x:TypeArguments="s:String[]">[{"Name","Value","Type"}]</InArgument>
                       </Assign.Value>
                     </Assign>
-                    <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="545.6,373.6" sap2010:WorkflowViewState.IdRef="ForEach`1_5" Values="[arrstrValidateColumns]">
+                    <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="547.2,373.6" sap2010:WorkflowViewState.IdRef="ForEach`1_5" Values="[arrstrValidateColumns]">
                       <ui:ForEach.Body>
                         <ActivityAction x:TypeArguments="x:String">
                           <ActivityAction.Argument>
@@ -208,7 +285,7 @@
                           </ActivityAction.Argument>
                           <If Condition="[not dt_SettingsAndConstants.Columns.Contains(validateColumn)]" sap:VirtualizedContainerService.HintSize="483.2,248.8" sap2010:WorkflowViewState.IdRef="If_5">
                             <If.Then>
-                              <Throw DisplayName="init Constant Error" Exception="[New Exception(&quot;Missing Constant Sheet Header &quot;&quot;&quot;+validateColumn+&quot;&quot;&quot; at &quot;&quot;&quot;+Sheet+&quot;&quot;&quot;.&quot;)]" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="Throw_5" />
+                              <Throw DisplayName="init Constant Error" Exception="[New Exception(&quot;Missing Constant Sheet Header &quot;&quot;&quot;+validateColumn+&quot;&quot;&quot; at &quot;&quot;&quot;+Sheet+&quot;&quot;&quot;.. (&quot;+String.Join(&quot;,&quot;,arrstrValidateColumns.ToArray)+&quot;)&quot;)]" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="Throw_5" />
                             </If.Then>
                             <If.Else>
                               <Sequence sap:VirtualizedContainerService.HintSize="200,84.8" sap2010:WorkflowViewState.IdRef="Sequence_11">
@@ -223,13 +300,13 @@
                         </ActivityAction>
                       </ui:ForEach.Body>
                     </ui:ForEach>
-                    <ui:ForEachRow ColumnNames="{x:Null}" CurrentIndex="[CRowIndex]" DataTable="[dt_SettingsAndConstants]" DisplayName="For each configuration row" sap:VirtualizedContainerService.HintSize="545.6,1108" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
+                    <ui:ForEachRow ColumnNames="{x:Null}" CurrentIndex="[CRowIndex]" DataTable="[dt_SettingsAndConstants]" DisplayName="For each configuration row" sap:VirtualizedContainerService.HintSize="547.2,1182.4" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
                       <ui:ForEachRow.Body>
                         <ActivityAction x:TypeArguments="sd:DataRow">
                           <ActivityAction.Argument>
                             <DelegateInArgument x:TypeArguments="sd:DataRow" Name="CRow" />
                           </ActivityAction.Argument>
-                          <If sap2010:Annotation.AnnotationText="Read non-empty rows in the sheet." Condition="[Not String.IsNullOrWhiteSpace(CRow(&quot;Name&quot;).ToString.Trim)]" DisplayName="If configuration row is not empty" sap:VirtualizedContainerService.HintSize="512,987.2" sap2010:WorkflowViewState.IdRef="If_2">
+                          <If sap2010:Annotation.AnnotationText="Read non-empty rows in the sheet." Condition="[Not String.IsNullOrWhiteSpace(CRow(&quot;Name&quot;).ToString.Trim)]" DisplayName="If configuration row is not empty" sap:VirtualizedContainerService.HintSize="513.6,1061.6" sap2010:WorkflowViewState.IdRef="If_2">
                             <sap:WorkflowViewStateService.ViewState>
                               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                                 <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
@@ -238,33 +315,27 @@
                               </scg:Dictionary>
                             </sap:WorkflowViewStateService.ViewState>
                             <If.Then>
-                              <Sequence sap:VirtualizedContainerService.HintSize="476.8,767.2" sap2010:WorkflowViewState.IdRef="Sequence_5">
+                              <Sequence sap:VirtualizedContainerService.HintSize="478.4,841.6" sap2010:WorkflowViewState.IdRef="Sequence_5">
                                 <sap:WorkflowViewStateService.ViewState>
                                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                                   </scg:Dictionary>
                                 </sap:WorkflowViewStateService.ViewState>
-                                <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="435.2,270.4" sap2010:WorkflowViewState.IdRef="TryCatch_4">
+                                <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="436.8,344.8" sap2010:WorkflowViewState.IdRef="TryCatch_4">
                                   <TryCatch.Try>
                                     <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Assign Value" sap:VirtualizedContainerService.HintSize="333.6,113.6" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="InitialValue.xaml">
                                       <ui:InvokeWorkflowFile.Arguments>
-                                        <InArgument x:TypeArguments="x:String" x:Key="in_UNDEFINE_VALUE">
-                                          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="CRow( arrstrValidateColumns(1)).ToString" />
-                                        </InArgument>
-                                        <InArgument x:TypeArguments="x:String" x:Key="in_VALUE_TYPE">
-                                          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="CRow( arrstrValidateColumns(2)).ToString" />
-                                        </InArgument>
-                                        <OutArgument x:TypeArguments="c:Configs" x:Key="out_DEFINED_VALUE">
-                                          <mva:VisualBasicReference x:TypeArguments="c:Configs" ExpressionText="out_CONFIGS(CRow(arrstrValidateColumns(0)).ToString.Trim)" />
-                                        </OutArgument>
+                                        <InArgument x:TypeArguments="x:String" x:Key="in_UNDEFINE_VALUE">[CRow( arrstrValidateColumns(1)).ToString]</InArgument>
+                                        <InArgument x:TypeArguments="x:String" x:Key="in_VALUE_TYPE">[CRow( arrstrValidateColumns(2)).ToString]</InArgument>
+                                        <OutArgument x:TypeArguments="c:Config" x:Key="out_DEFINED_VALUE">[out_CONFIGS(CRow(arrstrValidateColumns(0)).ToString.Trim)]</OutArgument>
                                       </ui:InvokeWorkflowFile.Arguments>
                                     </ui:InvokeWorkflowFile>
                                   </TryCatch.Try>
                                   <TryCatch.Catches>
-                                    <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="400,105.6" sap2010:WorkflowViewState.IdRef="Catch`1_3">
+                                    <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="403.2,22.4" sap2010:WorkflowViewState.IdRef="Catch`1_3">
                                       <sap:WorkflowViewStateService.ViewState>
                                         <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
                                           <x:Boolean x:Key="IsPinned">False</x:Boolean>
                                         </scg:Dictionary>
                                       </sap:WorkflowViewStateService.ViewState>
@@ -277,7 +348,7 @@
                                     </Catch>
                                   </TryCatch.Catches>
                                 </TryCatch>
-                                <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="435.2,231.2" sap2010:WorkflowViewState.IdRef="CommentOut_1">
+                                <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="436.8,231.2" sap2010:WorkflowViewState.IdRef="CommentOut_1">
                                   <ui:CommentOut.Body>
                                     <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="304,152.8" sap2010:WorkflowViewState.IdRef="Sequence_15">
                                       <sap:WorkflowViewStateService.ViewState>
@@ -296,7 +367,7 @@
                                     </Sequence>
                                   </ui:CommentOut.Body>
                                 </ui:CommentOut>
-                                <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="435.2,92.8" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;get config &quot;+CRow( arrstrValidateColumns(0)).ToString+&quot; : &quot;+CRow( arrstrValidateColumns(1)).ToString]" />
+                                <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="436.8,92.8" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;get config &quot;+CRow( arrstrValidateColumns(0)).ToString+&quot; : &quot;+CRow( arrstrValidateColumns(1)).ToString]" />
                               </Sequence>
                             </If.Then>
                           </If>
@@ -313,13 +384,13 @@
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
             </ui:ForEach>
-            <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="625.6,2042.4" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[in_ORCHESTRATOR_SHEETS]">
+            <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each Orchestrator Sheets" sap:VirtualizedContainerService.HintSize="624,2045.6" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[in_ORCHESTRATOR_SHEETS]">
               <ui:ForEach.Body>
                 <ActivityAction x:TypeArguments="x:String">
                   <ActivityAction.Argument>
                     <DelegateInArgument x:TypeArguments="x:String" Name="sheet" />
                   </ActivityAction.Argument>
-                  <Sequence sap2010:Annotation.AnnotationText="Get from Orchestrator the values of assets listed in the Assets sheet." DisplayName="Get Orchestrator assets" sap:VirtualizedContainerService.HintSize="590.4,1917.6" sap2010:WorkflowViewState.IdRef="Sequence_8">
+                  <Sequence sap2010:Annotation.AnnotationText="Get from Orchestrator the values of assets listed in the Assets sheet." DisplayName="Get Orchestrator assets" sap:VirtualizedContainerService.HintSize="560,1920.8" sap2010:WorkflowViewState.IdRef="Sequence_8">
                     <Sequence.Variables>
                       <Variable x:TypeArguments="sd:DataTable" Name="dt_Assets" />
                       <Variable x:TypeArguments="s:String[]" Name="arrstrValidateColumns" />
@@ -333,7 +404,7 @@
                         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                       </scg:Dictionary>
                     </sap:WorkflowViewStateService.ViewState>
-                    <Assign sap:VirtualizedContainerService.HintSize="548.8,60" sap2010:WorkflowViewState.IdRef="Assign_10">
+                    <Assign sap:VirtualizedContainerService.HintSize="518.4,60" sap2010:WorkflowViewState.IdRef="Assign_10">
                       <Assign.To>
                         <OutArgument x:TypeArguments="sd:DataTable">[dt_Assets]</OutArgument>
                       </Assign.To>
@@ -341,14 +412,14 @@
                         <InArgument x:TypeArguments="sd:DataTable">[Nothing]</InArgument>
                       </Assign.Value>
                     </Assign>
-                    <ui:ReadRange AddHeaders="True" DataTable="[dt_Assets]" DisplayName="Read range (Assets sheet)" sap:VirtualizedContainerService.HintSize="548.8,88" sap2010:WorkflowViewState.IdRef="ReadRange_2" SheetName="[sheet]" WorkbookPath="[in_CONFIG_FILE_PATH]">
+                    <ui:ReadRange AddHeaders="True" DataTable="[dt_Assets]" DisplayName="Read range (Assets sheet)" sap:VirtualizedContainerService.HintSize="518.4,88" sap2010:WorkflowViewState.IdRef="ReadRange_2" SheetName="[sheet]" WorkbookPath="[in_CONFIG_FILE_PATH]">
                       <ui:ReadRange.Range>
                         <InArgument x:TypeArguments="x:String">
                           <Literal x:TypeArguments="x:String" Value="" />
                         </InArgument>
                       </ui:ReadRange.Range>
                     </ui:ReadRange>
-                    <Assign sap:VirtualizedContainerService.HintSize="548.8,60" sap2010:WorkflowViewState.IdRef="Assign_6">
+                    <Assign sap:VirtualizedContainerService.HintSize="518.4,60" sap2010:WorkflowViewState.IdRef="Assign_6">
                       <Assign.To>
                         <OutArgument x:TypeArguments="s:String[]">[arrstrValidateColumns]</OutArgument>
                       </Assign.To>
@@ -356,7 +427,7 @@
                         <InArgument x:TypeArguments="s:String[]">[{"Name","Asset","Type","OrchestratorAssetFolder"}]</InArgument>
                       </Assign.Value>
                     </Assign>
-                    <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="548.8,52.8" sap2010:WorkflowViewState.IdRef="ForEach`1_6" Values="[arrstrValidateColumns]">
+                    <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="518.4,373.6" sap2010:WorkflowViewState.IdRef="ForEach`1_6" Values="[arrstrValidateColumns]">
                       <ui:ForEach.Body>
                         <ActivityAction x:TypeArguments="x:String">
                           <ActivityAction.Argument>
@@ -364,7 +435,7 @@
                           </ActivityAction.Argument>
                           <If Condition="[not dt_Assets.Columns.Contains(validateColumn)]" sap:VirtualizedContainerService.HintSize="483.2,248.8" sap2010:WorkflowViewState.IdRef="If_6">
                             <If.Then>
-                              <Throw DisplayName="init Orchestrator Value Error" Exception="[New Exception(&quot;Missing Orchestrator Sheet Header &quot;&quot;&quot;+validateColumn+&quot;&quot;&quot; at &quot;&quot;&quot;+Sheet+&quot;&quot;&quot;.&quot;)]" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="Throw_6" />
+                              <Throw DisplayName="init Orchestrator Value Error" Exception="[New Exception(&quot;Missing Orchestrator Sheet Header &quot;&quot;&quot;+validateColumn+&quot;&quot;&quot; at &quot;&quot;&quot;+Sheet+&quot;&quot;&quot;.. (&quot;+String.Join(&quot;,&quot;,arrstrValidateColumns.ToArray)+&quot;)&quot;)]" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="Throw_6" />
                             </If.Then>
                             <If.Else>
                               <Sequence sap2010:WorkflowViewState.IdRef="Sequence_12">
@@ -380,122 +451,174 @@
                       </ui:ForEach.Body>
                       <sap:WorkflowViewStateService.ViewState>
                         <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                           <x:Boolean x:Key="IsPinned">False</x:Boolean>
                         </scg:Dictionary>
                       </sap:WorkflowViewStateService.ViewState>
                     </ui:ForEach>
-                    <ui:ForEachRow ColumnNames="{x:Null}" CurrentIndex="[OrRowIndex]" DataTable="[dt_Assets]" DisplayName="For each asset row" sap:VirtualizedContainerService.HintSize="548.8,1372.8" sap2010:WorkflowViewState.IdRef="ForEachRow_2">
+                    <ui:ForEachRow ColumnNames="{x:Null}" CurrentIndex="[OrRowIndex]" DataTable="[dt_Assets]" DisplayName="For each asset row" sap:VirtualizedContainerService.HintSize="518.4,1055.2" sap2010:WorkflowViewState.IdRef="ForEachRow_2">
                       <ui:ForEachRow.Body>
                         <ActivityAction x:TypeArguments="sd:DataRow">
                           <ActivityAction.Argument>
                             <DelegateInArgument x:TypeArguments="sd:DataRow" Name="OrRow" />
                           </ActivityAction.Argument>
-                          <TryCatch DisplayName="Try retrieving asset from Orchestrator" sap:VirtualizedContainerService.HintSize="515.2,1252" sap2010:WorkflowViewState.IdRef="TryCatch_2">
+                          <Sequence DisplayName="do asset row" sap:VirtualizedContainerService.HintSize="478.4,934.4" sap2010:WorkflowViewState.IdRef="Sequence_20">
+                            <Sequence.Variables>
+                              <Variable x:TypeArguments="x:String" Name="AssetValue" />
+                            </Sequence.Variables>
                             <sap:WorkflowViewStateService.ViewState>
                               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                                <x:Boolean x:Key="IsPinned">False</x:Boolean>
                               </scg:Dictionary>
                             </sap:WorkflowViewStateService.ViewState>
-                            <TryCatch.Try>
-                              <Sequence DisplayName="Get asset from Orchestrator" sap:VirtualizedContainerService.HintSize="478.4,1020.8" sap2010:WorkflowViewState.IdRef="Sequence_7">
-                                <Sequence.Variables>
-                                  <Variable x:TypeArguments="ui:GenericValue" Name="AssetValue" />
-                                </Sequence.Variables>
-                                <sap:WorkflowViewStateService.ViewState>
-                                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                                  </scg:Dictionary>
-                                </sap:WorkflowViewStateService.ViewState>
-                                <ui:GetRobotAsset TimeoutMS="{x:Null}" AssetName="[OrRow( arrstrValidateColumns(1)).ToString.Trim]" DisplayName="Get Orchestrator asset" FolderPath="[OrRow( arrstrValidateColumns(3)).ToString.Trim]" sap:VirtualizedContainerService.HintSize="436.8,139.2" sap2010:WorkflowViewState.IdRef="GetRobotAsset_1">
+                            <TryCatch DisplayName="Try retrieving asset from Orchestrator" sap:VirtualizedContainerService.HintSize="736,1105.6" sap2010:WorkflowViewState.IdRef="TryCatch_2">
+                              <sap:WorkflowViewStateService.ViewState>
+                                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                  <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                </scg:Dictionary>
+                              </sap:WorkflowViewStateService.ViewState>
+                              <TryCatch.Try>
+                                <ui:GetRobotAsset TimeoutMS="{x:Null}" AssetName="[OrRow( arrstrValidateColumns(1)).ToString.Trim]" DisplayName="Get Orchestrator asset" FolderPath="[OrRow( arrstrValidateColumns(3)).ToString.Trim]" sap:VirtualizedContainerService.HintSize="333.6,139.2" sap2010:WorkflowViewState.IdRef="GetRobotAsset_2">
                                   <ui:GetRobotAsset.Value>
-                                    <OutArgument x:TypeArguments="ui:GenericValue">[AssetValue]</OutArgument>
+                                    <OutArgument x:TypeArguments="x:String">[AssetValue]</OutArgument>
                                   </ui:GetRobotAsset.Value>
                                 </ui:GetRobotAsset>
-                                <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="436.8,344.8" sap2010:WorkflowViewState.IdRef="TryCatch_5">
-                                  <TryCatch.Try>
-                                    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Assign Value" sap:VirtualizedContainerService.HintSize="333.6,113.6" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="InitialValue.xaml">
-                                      <ui:InvokeWorkflowFile.Arguments>
-                                        <InArgument x:TypeArguments="x:String" x:Key="in_UNDEFINE_VALUE">
-                                          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="AssetValue" />
-                                        </InArgument>
-                                        <InArgument x:TypeArguments="x:String" x:Key="in_VALUE_TYPE">
-                                          <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="OrRow( arrstrValidateColumns(2)).ToString" />
-                                        </InArgument>
-                                        <OutArgument x:TypeArguments="c:Configs" x:Key="out_DEFINED_VALUE">
-                                          <mva:VisualBasicReference x:TypeArguments="c:Configs" ExpressionText="out_CONFIGs(OrRow( arrstrValidateColumns(0)).ToString.Trim)" />
-                                        </OutArgument>
-                                      </ui:InvokeWorkflowFile.Arguments>
-                                    </ui:InvokeWorkflowFile>
-                                  </TryCatch.Try>
-                                  <TryCatch.Catches>
-                                    <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="403.2,22.4" sap2010:WorkflowViewState.IdRef="Catch`1_4">
-                                      <sap:WorkflowViewStateService.ViewState>
-                                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                                          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-                                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                                        </scg:Dictionary>
-                                      </sap:WorkflowViewStateService.ViewState>
-                                      <ActivityAction x:TypeArguments="s:Exception">
-                                        <ActivityAction.Argument>
-                                          <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
-                                        </ActivityAction.Argument>
-                                        <Throw DisplayName="InitialValue Error" Exception="[New Exception(exception.Message+&quot; at [Row&quot;+(OrRowIndex+2).ToString+&quot;,&quot;&quot;&quot;+Sheet+&quot;&quot;&quot; sheet]&quot;)]" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="Throw_10" />
-                                      </ActivityAction>
-                                    </Catch>
-                                  </TryCatch.Catches>
-                                </TryCatch>
-                                <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="436.8,231.2" sap2010:WorkflowViewState.IdRef="CommentOut_2">
-                                  <ui:CommentOut.Body>
-                                    <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="304,152.8" sap2010:WorkflowViewState.IdRef="Sequence_16">
+                              </TryCatch.Try>
+                              <TryCatch.Catches>
+                                <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="702.4,940.8" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+                                  <sap:WorkflowViewStateService.ViewState>
+                                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                    </scg:Dictionary>
+                                  </sap:WorkflowViewStateService.ViewState>
+                                  <ActivityAction x:TypeArguments="s:Exception">
+                                    <ActivityAction.Argument>
+                                      <DelegateInArgument x:TypeArguments="s:Exception" Name="Exception" />
+                                    </ActivityAction.Argument>
+                                    <If sap2010:Annotation.AnnotationText="Logs a message and throw exception in case the asset is specified in the Config file, but it could not be loaded from Orchestrator." Condition="[Not String.IsNullOrWhiteSpace(OrRow( arrstrValidateColumns(0)).ToString.Trim)]" DisplayName="If asset name is specified, but it cannot be retrieved" sap:VirtualizedContainerService.HintSize="696,870.4" sap2010:WorkflowViewState.IdRef="If_3">
                                       <sap:WorkflowViewStateService.ViewState>
                                         <scg:Dictionary x:TypeArguments="x:String, x:Object">
                                           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                                         </scg:Dictionary>
                                       </sap:WorkflowViewStateService.ViewState>
-                                      <Assign DisplayName="Assign asset value in Config" sap:VirtualizedContainerService.HintSize="262.4,60" sap2010:WorkflowViewState.IdRef="Assign_3">
-                                        <Assign.To>
-                                          <OutArgument x:TypeArguments="x:Object">[out_CONFIGs(OrRow( arrstrValidateColumns(0)).ToString.Trim)]</OutArgument>
-                                        </Assign.To>
-                                        <Assign.Value>
-                                          <InArgument x:TypeArguments="x:Object">[AssetValue]</InArgument>
-                                        </Assign.Value>
-                                      </Assign>
-                                    </Sequence>
-                                  </ui:CommentOut.Body>
-                                </ui:CommentOut>
-                                <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="436.8,92.8" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="[&quot;get Asset : &quot;+OrRow( arrstrValidateColumns(1)).ToString+&quot; : &quot;+AssetValue.ToString]" />
-                              </Sequence>
-                            </TryCatch.Try>
-                            <TryCatch.Catches>
-                              <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="481.6,22.4" sap2010:WorkflowViewState.IdRef="Catch`1_1">
-                                <sap:WorkflowViewStateService.ViewState>
-                                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                                    <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-                                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                                  </scg:Dictionary>
-                                </sap:WorkflowViewStateService.ViewState>
-                                <ActivityAction x:TypeArguments="s:Exception">
-                                  <ActivityAction.Argument>
-                                    <DelegateInArgument x:TypeArguments="s:Exception" Name="Exception" />
-                                  </ActivityAction.Argument>
-                                  <If sap2010:Annotation.AnnotationText="Logs a message and throw exception in case the asset is specified in the Config file, but it could not be loaded from Orchestrator." Condition="[Not String.IsNullOrWhiteSpace(OrRow( arrstrValidateColumns(0)).ToString.Trim)]" DisplayName="If asset name is specified, but it cannot be retrieved" sap:VirtualizedContainerService.HintSize="483.2,280" sap2010:WorkflowViewState.IdRef="If_3">
-                                    <sap:WorkflowViewStateService.ViewState>
-                                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                                        <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                                        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-                                      </scg:Dictionary>
-                                    </sap:WorkflowViewStateService.ViewState>
-                                    <If.Then>
-                                      <Throw DisplayName="Throw AssetFailedToLoad Exception" Exception="[new Exception(&quot;Loading asset &quot; + OrRow( arrstrValidateColumns(1)).ToString + &quot; failed: &quot; + Exception.Message)]" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="Throw_2" />
-                                    </If.Then>
-                                  </If>
-                                </ActivityAction>
-                              </Catch>
-                            </TryCatch.Catches>
-                          </TryCatch>
+                                      <If.Then>
+                                        <Sequence DisplayName="maintain value" sap:VirtualizedContainerService.HintSize="660.8,637.6" sap2010:WorkflowViewState.IdRef="Sequence_21">
+                                          <Sequence.Variables>
+                                            <Variable x:TypeArguments="sd:DataRow" Name="drMaintainRow" />
+                                          </Sequence.Variables>
+                                          <sap:WorkflowViewStateService.ViewState>
+                                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                            </scg:Dictionary>
+                                          </sap:WorkflowViewStateService.ViewState>
+                                          <Assign sap:VirtualizedContainerService.HintSize="619.2,60" sap2010:WorkflowViewState.IdRef="Assign_15">
+                                            <Assign.To>
+                                              <OutArgument x:TypeArguments="sd:DataRow">[drMaintainRow]</OutArgument>
+                                            </Assign.To>
+                                            <Assign.Value>
+                                              <InArgument x:TypeArguments="sd:DataRow">[dtMaintainValue.Rows.Find(OrRow(arrstrValidateColumns(0)).ToString.Trim)]</InArgument>
+                                            </Assign.Value>
+                                          </Assign>
+                                          <If Condition="[((not drMaintainRow is Nothing) andalso (not drMaintainRow.Item( arrstrValidateMaintainColumns(1)) is Nothing) AndAlso (Not String.IsNullOrEmpty(drMaintainRow.Item( arrstrValidateMaintainColumns(1)).ToString.Trim)))]" sap:VirtualizedContainerService.HintSize="619.2,444.8" sap2010:WorkflowViewState.IdRef="If_10">
+                                            <sap:WorkflowViewStateService.ViewState>
+                                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                              </scg:Dictionary>
+                                            </sap:WorkflowViewStateService.ViewState>
+                                            <If.Then>
+                                              <Sequence sap:VirtualizedContainerService.HintSize="375.2,285.6" sap2010:WorkflowViewState.IdRef="Sequence_23">
+                                                <sap:WorkflowViewStateService.ViewState>
+                                                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                                  </scg:Dictionary>
+                                                </sap:WorkflowViewStateService.ViewState>
+                                                <Assign DisplayName="Assign Maintain Value" sap:VirtualizedContainerService.HintSize="333.6,60" sap2010:WorkflowViewState.IdRef="Assign_16">
+                                                  <Assign.To>
+                                                    <OutArgument x:TypeArguments="x:String">[AssetValue]</OutArgument>
+                                                  </Assign.To>
+                                                  <Assign.Value>
+                                                    <InArgument x:TypeArguments="x:String">[drMaintainRow.Item( arrstrValidateMaintainColumns(1)).ToString.Trim]</InArgument>
+                                                  </Assign.Value>
+                                                </Assign>
+                                                <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="333.6,92.8" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Warn" Message="[&quot;Loading asset &quot; + OrRow( arrstrValidateColumns(1)).ToString + &quot; failed. Maintain by Config File. : &quot; +Exception.Message]" />
+                                              </Sequence>
+                                            </If.Then>
+                                            <If.Else>
+                                              <Throw DisplayName="Throw AssetFailedToLoad Exception" Exception="[new Exception(&quot;Loading asset &quot; + OrRow( arrstrValidateColumns(1)).ToString + &quot; failed and maintaining value is not valid. : &quot; + Exception.Message)]" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="Throw_2" />
+                                            </If.Else>
+                                          </If>
+                                        </Sequence>
+                                      </If.Then>
+                                    </If>
+                                  </ActivityAction>
+                                </Catch>
+                              </TryCatch.Catches>
+                            </TryCatch>
+                            <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="436.8,344.8" sap2010:WorkflowViewState.IdRef="TryCatch_6">
+                              <sap:WorkflowViewStateService.ViewState>
+                                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                </scg:Dictionary>
+                              </sap:WorkflowViewStateService.ViewState>
+                              <TryCatch.Try>
+                                <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Assign Value" sap:VirtualizedContainerService.HintSize="333.6,113.6" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="InitialValue.xaml">
+                                  <ui:InvokeWorkflowFile.Arguments>
+                                    <InArgument x:TypeArguments="x:String" x:Key="in_UNDEFINE_VALUE">[AssetValue]</InArgument>
+                                    <InArgument x:TypeArguments="x:String" x:Key="in_VALUE_TYPE">[OrRow( arrstrValidateColumns(2)).ToString]</InArgument>
+                                    <OutArgument x:TypeArguments="c:Config" x:Key="out_DEFINED_VALUE">[out_CONFIGs(OrRow( arrstrValidateColumns(0)).ToString.Trim)]</OutArgument>
+                                  </ui:InvokeWorkflowFile.Arguments>
+                                </ui:InvokeWorkflowFile>
+                              </TryCatch.Try>
+                              <TryCatch.Catches>
+                                <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="403.2,22.4" sap2010:WorkflowViewState.IdRef="Catch`1_5">
+                                  <sap:WorkflowViewStateService.ViewState>
+                                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                      <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                    </scg:Dictionary>
+                                  </sap:WorkflowViewStateService.ViewState>
+                                  <ActivityAction x:TypeArguments="s:Exception">
+                                    <ActivityAction.Argument>
+                                      <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+                                    </ActivityAction.Argument>
+                                    <Throw DisplayName="InitialValue Error" Exception="[New Exception(exception.Message+&quot; at [Row&quot;+(OrRowIndex+2).ToString+&quot;,&quot;&quot;&quot;+Sheet+&quot;&quot;&quot; sheet]&quot;)]" sap:VirtualizedContainerService.HintSize="200,22.4" sap2010:WorkflowViewState.IdRef="Throw_12" />
+                                  </ActivityAction>
+                                </Catch>
+                              </TryCatch.Catches>
+                            </TryCatch>
+                            <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="436.8,231.2" sap2010:WorkflowViewState.IdRef="CommentOut_4">
+                              <ui:CommentOut.Body>
+                                <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="304,152.8" sap2010:WorkflowViewState.IdRef="Sequence_22">
+                                  <sap:WorkflowViewStateService.ViewState>
+                                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                    </scg:Dictionary>
+                                  </sap:WorkflowViewStateService.ViewState>
+                                  <Assign DisplayName="Assign asset value in Config" sap:VirtualizedContainerService.HintSize="262.4,60" sap2010:WorkflowViewState.IdRef="Assign_13">
+                                    <Assign.To>
+                                      <OutArgument x:TypeArguments="x:Object">[out_CONFIGs(OrRow( arrstrValidateColumns(0)).ToString.Trim)]</OutArgument>
+                                    </Assign.To>
+                                    <Assign.Value>
+                                      <InArgument x:TypeArguments="x:Object">[AssetValue]</InArgument>
+                                    </Assign.Value>
+                                  </Assign>
+                                </Sequence>
+                              </ui:CommentOut.Body>
+                              <sap:WorkflowViewStateService.ViewState>
+                                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                                </scg:Dictionary>
+                              </sap:WorkflowViewStateService.ViewState>
+                            </ui:CommentOut>
+                            <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="436.8,92.8" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[&quot;get Asset : &quot;+OrRow( arrstrValidateColumns(1)).ToString+&quot; : &quot;+AssetValue.ToString]" />
+                          </Sequence>
                         </ActivityAction>
                       </ui:ForEachRow.Body>
                       <sap:WorkflowViewStateService.ViewState>
@@ -515,7 +638,7 @@
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
             </ui:ForEach>
-            <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="625.6,1708.8" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[in_CREDENTIAL_SHEETS]">
+            <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each Credential Sheets" sap:VirtualizedContainerService.HintSize="624,1708.8" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[in_CREDENTIAL_SHEETS]">
               <ui:ForEach.Body>
                 <ActivityAction x:TypeArguments="x:String">
                   <ActivityAction.Argument>
@@ -553,7 +676,7 @@
                         <OutArgument x:TypeArguments="s:String[]">[arrstrValidateColumns]</OutArgument>
                       </Assign.To>
                       <Assign.Value>
-                        <InArgument x:TypeArguments="s:String[]">[{"Name","Asset","OrchestratorAssetFolder"}]</InArgument>
+                        <InArgument x:TypeArguments="s:String[]">[{"UserName","Asset","OrchestratorAssetFolder"}]</InArgument>
                       </Assign.Value>
                     </Assign>
                     <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="518.4,373.6" sap2010:WorkflowViewState.IdRef="ForEach`1_7" Values="[arrstrValidateColumns]">
@@ -655,10 +778,10 @@
                                 </ui:CommentOut>
                                 <Assign DisplayName="Assign asset value in Config" sap:VirtualizedContainerService.HintSize="317.6,60" sap2010:WorkflowViewState.IdRef="Assign_4">
                                   <Assign.To>
-                                    <OutArgument x:TypeArguments="c:Configs">[out_CONFIGS(CrRow( arrstrValidateColumns(0)).ToString.Trim)]</OutArgument>
+                                    <OutArgument x:TypeArguments="c:Config">[out_CONFIGS(CrRow( arrstrValidateColumns(0)).ToString.Trim)]</OutArgument>
                                   </Assign.To>
                                   <Assign.Value>
-                                    <InArgument x:TypeArguments="c:Configs">[New Configs(strUserName,sestrPassword)]</InArgument>
+                                    <InArgument x:TypeArguments="c:Config">[New Config(strUserName,sestrPassword)]</InArgument>
                                   </Assign.Value>
                                 </Assign>
                               </Sequence>

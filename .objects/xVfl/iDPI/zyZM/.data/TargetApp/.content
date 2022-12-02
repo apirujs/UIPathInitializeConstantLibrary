@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-16"?>
+<TargetApp Area="0, 0, 0, 0" BrowserType="Chrome" ContentHash="jUuy7QKkH0yUtIo3BHKZJg" Selector="&lt;html app='chrome.exe' title='W3Schools Tryit Editor'/&gt;" Url="https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_js_dropdown_hover" xmlns="http://schemas.uipath.com/workflow/activities/uix">
+  <imageRef attrName="IconBase64" xmlns="">09u31mfEE_EmtxdsdWkAqfw</imageRef>
+  <imageRef attrName="InformativeScreenshot" originalValue="4b01ad7c9a7877e773cd668b63eafc25.png" xmlns="">0N1Qj3U2Sr0y-dO56dUDCxQ</imageRef>
+</TargetApp>

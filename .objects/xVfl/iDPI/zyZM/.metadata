@@ -1,0 +1,15 @@
+﻿{
+  "Id": "zyZMGuK0wkiezWPYhivgHA",
+  "Reference": "YwddmcUKXE6YV0DvNRq5vA/zyZMGuK0wkiezWPYhivgHA",
+  "ParentRef": "YwddmcUKXE6YV0DvNRq5vA/iDPIP8L5xEGUuxV_d1a7kQ",
+  "Name": "Chrome: W3Schools Tryit Editor",
+  "Type": "Screen",
+  "Created": "2022-11-11T06:53:45.7096654Z",
+  "CreatedBy": [
+    "UiPath.Platform, Version=21.10.0.0, Culture=neutral, PublicKeyToken=null"
+  ],
+  "Updated": "2022-11-11T06:54:27.3614048Z",
+  "UpdatedBy": [
+    "UiPath.Platform, Version=21.10.0.0, Culture=neutral, PublicKeyToken=null"
+  ]
+}
