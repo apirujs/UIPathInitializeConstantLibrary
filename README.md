@@ -1,1 +1,1 @@
-# RPA_Activity_InitializeConstant
+# RPA UIPath Library InitializeConstant
